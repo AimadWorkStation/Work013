@@ -1,7 +1,7 @@
 <?php 
 
-require '../app/Autoloader.php';
-
+require '../App/Autoloader.php';
+require '../App/App.php';
 App\Autoloader::register();
 
 $p = (isset($_GET['p'])) ? $_GET['p'] : 'home';
@@ -10,7 +10,7 @@ $p = (isset($_GET['p'])) ? $_GET['p'] : 'home';
  * initialize objects
  */
 // database
-$db = new App\Database('Blog');
+//$db = new App\Database('Blog');
 
 
 //all we get from ob_start save it in $content
@@ -23,6 +23,11 @@ switch ($p) {
 	case 'article':
 		require '../pages/article.php';
 		break;
+
+	case 'category':
+		require '../pages/category.php';
+		break;
+	
 
 	// case 'home':
 	// 	# code...

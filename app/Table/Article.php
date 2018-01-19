@@ -1,21 +1,26 @@
 <?php 
 namespace App\Table;
+use App\App;
 
 /**
 * 
 */
-class Article
+class Article extends Table
 {
-	//magic function
-	public function __get($key){
-		//to not call the methode every time we need instance varible
-		$method = 'get' .ucfirst($key);
-		$this->$key = $this->$method();
-		return $this->$key;
+	public static function getLast(){
+		return App::getDb()->query('Select articles.id,title,contenu, category.titre as category from articles LEFT Join category on category_id = category.id',__CLASS__);
 	}
+
 	public function getUrl(){
 		return 'index.php?p=article&id='. $this->id;
 	}
+
+
+	public static function LastByCategory($category_id){
+		return App::getDb()->prepare('Select articles.id,title,contenu, category.titre as category from articles LEFT Join category on category_id = category.id where category_id = ?',[$category_id],__CLASS__);
+	}
+
+
 	public function getExtrait(){
 		$html = '<p>'. substr($this->contenu,0,100) .'...</p>';
 		$html .= "<p><a href='";
