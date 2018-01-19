@@ -3,7 +3,7 @@ namespace App;
 //to escape the autoloader probleme we neet to get back class PDO to racin 
 use \PDO;
 /**
-* database connextion
+* database connextion v2.0
 */
 class Database 
 {
@@ -29,9 +29,16 @@ class Database
 		}
 		return $pdo;
 	}
-	public function query($statement){
+	public function query($statement,$class_name){
 		$req = $this->getPDO()->query($statement);
-		$data = $req->fetchAll(PDO::FETCH_OBJ);
+		$data = $req->fetchAll(PDO::FETCH_CLASS,$class_name);
+		return $data;
+	}
+	public function prepare($statement,$attr,$class_name,$one=false){
+		$req = $this->getPDO()->prepare($statement);
+		$req->execute($attr);
+		$req -> setFetchMode(PDO::FETCH_CLASS,$class_name);
+		$data = ($one) ? $req->fetch() : $req->fetchAll();
 		return $data;
 	}
 }
